@@ -80,8 +80,8 @@
             box-shadow: 0 10px 30px rgba(0, 210, 255, 0.2);
         }
 
-        /* APHider Detay Sayfası */
-        .aphider-details {
+        /* Proje Detay Sayfası */
+        .details-container {
             background: var(--card-bg);
             padding: 3rem;
             border-radius: 20px;
@@ -128,9 +128,9 @@
 
     <div class="container">
         <div id="home" class="section active">
-            <h1>Geleceği Şekillendiriyoruz</h1>
+            <h1>Açık kaynak ve Basit Arayüz</h1>
             <p style="font-size: 1.2rem; color: #94a3b8; margin-top: 1rem;">
-                Fastech, açık kaynak kodlu araçlar ve yüksek performanslı yazılımlar geliştiren bir teknoloji platformudur.
+                Fastech, açık kaynak kodlu araçlar ve basitleştirilmiş programlar yayınlayan bir platformdur.
             </p>
         </div>
 
@@ -142,40 +142,84 @@
                     <p style="color: #94a3b8; margin-top: 10px;">Gelişmiş uygulama gizleme ve kimlik değiştirme aracı.</p>
                     <p style="color: var(--primary); margin-top: 15px; font-weight: bold;">Detayları Gör →</p>
                 </div>
+
+                <div class="project-card" onclick="showSection('fencrypt-page')">
+                    <h3>FEncrypt</h3>
+                    <p style="color: #94a3b8; margin-top: 10px;">Base64, AES256 ve RSA256 destekli şifreleme aracı.</p>
+                    <p style="color: var(--primary); margin-top: 15px; font-weight: bold;">Detayları Gör →</p>
+                </div>
             </div>
         </div>
 
         <div id="aphider-page" class="section">
             <a onclick="showSection('projects')" style="color: var(--primary); cursor: pointer; display: block; margin-bottom: 1rem;">← Projelere Dön</a>
-            <div class="aphider-details">
+            <div class="details-container">
                 <h1>APHider v1.0</h1>
                 <p style="margin-bottom: 2rem; color: #94a3b8;">Uygulamalarınızı yönetin, gizleyin ve anonimleştirin.</p>
 
                 <div class="detail-tabs">
-                    <button class="tab-btn active" onclick="openTab(event, 'desc')">Açıklama (Desc)</button>
-                    <button class="tab-btn" onclick="openTab(event, 'release')">Yayın (Release)</button>
-                    <button class="tab-btn" onclick="openTab(event, 'doc')">Dokümantasyon (Doc)</button>
+                    <button class="tab-btn active" onclick="openTab(event, 'aph-desc')">Açıklama</button>
+                    <button class="tab-btn" onclick="openTab(event, 'aph-release')">Yayın</button>
+                    <button class="tab-btn" onclick="openTab(event, 'aph-doc')">Dokümantasyon</button>
                 </div>
 
-                <div id="desc" class="tab-content active">
+                <div id="aph-desc" class="tab-content active">
                     <h3>Proje Hakkında</h3>
-                    <p>APHider, Windows sistemlerinde çalışan uygulamaları anlık olarak tespit edip sistemden <strong>gizlemenize</strong> veya uygulamanın <strong>başlık ve kimlik bilgilerini (process name) değiştirmenize</strong> olanak tanıyan bir güvenlik ve gizlilik aracıdır.</p>
-                    <p style="margin-top: 1rem;">Özellikle gizlilik odaklı kullanıcılar ve geliştiriciler için pencereleri tamamen izole etmek adına tasarlanmıştır.</p>
+                    <p>APHider, Windows sistemlerinde çalışan uygulamaları anlık olarak tespit edip sistemden <strong>gizlemenize</strong> veya uygulamanın <strong>başlık ve kimlik bilgilerini</strong> değiştirmenize olanak tanıyan bir güvenlik aracıdır.</p>
                 </div>
 
-                <div id="release" class="tab-content">
+                <div id="aph-release" class="tab-content">
                     <h3>Son Sürümü İndir</h3>
-                    <p>Aşağıdaki butona tıklayarak derlenmiş .exe dosyasını indirebilirsiniz.</p>
-                    <a href="https://github.com/hcode-lang/aphider/raw/refs/heads/main/APHider.exe" class="download-btn">APHider.exe (10.9 MB)</a>
+                    <a href="https://github.com/hcode-lang/fastech/raw/refs/heads/main/datasandfiles/APHider.exe" class="download-btn">APHider.exe (10.9 MB)</a>
                 </div>
 
-                <div id="doc" class="tab-content">
+                <div id="aph-doc" class="tab-content">
                     <h3>Kullanım Kılavuzu</h3>
-                    <p>APHider'ı kullanmak oldukça basittir:</p>
                     <pre>
 1. Programı yönetici olarak çalıştırın.
-2. Program işle sekmesine geçip program adını yaz ve arat
-3. Programı seçip kimlik değiştirebilir veya gizleyebilirsiniz
+2. Program işle sekmesine geçip program adını yaz ve arat.
+3. Programı seçip kimlik değiştirebilir veya gizleyebilirsiniz.
+                    </pre>
+                </div>
+            </div>
+        </div>
+
+        <div id="fencrypt-page" class="section">
+            <a onclick="showSection('projects')" style="color: var(--primary); cursor: pointer; display: block; margin-bottom: 1rem;">← Projelere Dön</a>
+            <div class="details-container">
+                <h1>FEncrypt v1.0</h1>
+                <p style="margin-bottom: 2rem; color: #94a3b8;">Verilerinizi gelişmiş algoritmalarla güvence altına alın.</p>
+
+                <div class="detail-tabs">
+                    <button class="tab-btn active" onclick="openTab(event, 'fe-desc')">Açıklama</button>
+                    <button class="tab-btn" onclick="openTab(event, 'fe-release')">Yayın</button>
+                    <button class="tab-btn" onclick="openTab(event, 'fe-doc')">Dokümantasyon</button>
+                </div>
+
+                <div id="fe-desc" class="tab-content active">
+                    <h3>Proje Hakkında</h3>
+                    <p>FEncrypt, metin tabanlı verilerinizi hızlı ve güvenli bir şekilde şifrelemek için tasarlanmış taşınabilir (.exe) bir araçtır.</p>
+                    <ul style="margin-top: 1rem; margin-left: 1.5rem;">
+                        <li><strong>Base64:</strong> Hızlı veri kodlama.</li>
+                        <li><strong>AES-256:</strong> Endüstri standardı simetrik şifreleme.</li>
+                        <li><strong>RSA-256:</strong> Güvenli anahtar tabanlı asimetrik şifreleme.</li>
+                    </ul>
+                </div>
+
+                <div id="fe-release" class="tab-content">
+                    <h3>Son Sürümü İndir</h3>
+                    <p>Derlenmiş exe dosyasını aşağıdaki bağlantıdan indirebilirsiniz.</p>
+                    <a href="https://github.com/hcode-lang/fastech/raw/refs/heads/main/datasandfiles/FEncrypt.exe" class="download-btn">FEncrypt.exe (10.8)</a>
+                </div>
+
+                <div id="fe-doc" class="tab-content">
+                    <h3>Nasıl Kullanılır?</h3>
+                    <pre>
+1. FEncrypt.exe dosyasını çalıştırın.
+2. Şifrelemek istediğiniz metni giriş alanına yapıştırın.
+3. Kullanmak istediğiniz yöntemi (Base64, AES256, RSA) seçin.
+4. "Key" alanına şifrenizi girin ve "Encrypt" butonuna basın.
+5. Deşifre etmek için "Decrypt" moduna geçip aynı anahtarı kullanın.
                     </pre>
                 </div>
             </div>
@@ -197,17 +241,23 @@
             window.scrollTo(0, 0);
         }
 
-        // APHider İçindeki Alt Sekmeleri Değiştirme Fonksiyonu
+        // Proje İçindeki Alt Sekmeleri Değiştirme Fonksiyonu (Genelleştirildi)
         function openTab(evt, tabName) {
             let i, tabcontent, tablinks;
-            tabcontent = document.getElementsByClassName("tab-content");
+            
+            // Tıklanan butonun ebeveynindeki tab-contentleri bul
+            let parentSection = evt.currentTarget.closest('.section');
+            tabcontent = parentSection.getElementsByClassName("tab-content");
+            
             for (i = 0; i < tabcontent.length; i++) {
                 tabcontent[i].classList.remove("active");
             }
-            tablinks = document.getElementsByClassName("tab-btn");
+            
+            tablinks = parentSection.getElementsByClassName("tab-btn");
             for (i = 0; i < tablinks.length; i++) {
                 tablinks[i].classList.remove("active");
             }
+            
             document.getElementById(tabName).classList.add("active");
             evt.currentTarget.classList.add("active");
         }
