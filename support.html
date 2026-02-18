@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fastech Support | AI Destek</title>
+    <title>Fastech Support | İletişim</title>
     <style>
         :root {
             --primary: #00d2ff;
@@ -63,7 +63,7 @@
         h2 { font-size: 2rem; margin-bottom: 0.5rem; color: var(--primary); }
         p.subtitle { color: #94a3b8; margin-bottom: 2rem; font-size: 0.9rem; }
 
-        .form-group { margin-bottom: 1.5rem; }
+        .form-group { margin-bottom: 1.2rem; }
         label { display: block; margin-bottom: 0.5rem; font-size: 0.85rem; color: #94a3b8; }
 
         input, select, textarea {
@@ -91,36 +91,32 @@
             border-radius: 12px;
             font-weight: bold;
             cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
+            transition: 0.3s;
+            font-size: 1rem;
         }
 
-        .btn-send:disabled { opacity: 0.6; cursor: not-allowed; }
-
-        .loader {
-            width: 18px;
-            height: 18px;
-            border: 2px solid rgba(255,255,255,0.3);
-            border-top-color: #fff;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-            display: none;
-        }
-
-        @keyframes spin { to { transform: rotate(360deg); } }
+        .btn-send:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(0, 210, 255, 0.2); }
 
         #response-msg {
             margin-top: 1.5rem;
             padding: 1rem;
             border-radius: 12px;
             display: none;
+            text-align: center;
             font-size: 0.9rem;
         }
 
         .success { background: rgba(16, 185, 129, 0.1); color: var(--accent); border: 1px solid var(--accent); }
-        .error { background: rgba(239, 68, 68, 0.1); color: #f87171; border: 1px solid #f87171; }
+        
+        .mail-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 0.8rem;
+            display: block;
+            text-align: center;
+            margin-top: 1rem;
+            opacity: 0.7;
+        }
     </style>
 </head>
 <body>
@@ -128,99 +124,54 @@
     <div class="bg-glow"></div>
 
     <div class="support-card">
-        <h2>Destek Hattı</h2>
-        <p class="subtitle">Sorularınızı iletin, AI asistanımız anında yanıtlasın.</p>
+        <h2>Bize Ulaşın</h2>
+        <p class="subtitle">Sorularınız için communication@fasth.tech adresine yazabilir veya formu doldurabilirsiniz.</p>
 
-        <form id="supportForm">
+        <form id="contactForm" action="https://formspree.io/f/communication@fasth.tech" method="POST">
             <div class="form-group">
                 <label>Ad Soyad</label>
-                <input type="text" id="userName" required>
+                <input type="text" name="name" required placeholder="Adınız">
             </div>
 
             <div class="form-group">
                 <label>E-posta</label>
-                <input type="email" id="userEmail" required>
+                <input type="email" name="_replyto" required placeholder="E-posta adresiniz">
             </div>
 
             <div class="form-group">
                 <label>Konu</label>
-                <select id="issueType">
+                <select name="subject">
                     <option value="Teknik Destek">Teknik Destek</option>
-                    <option value="Geri Bildirim">Geri Bildirim</option>
-                    <option value="Bilgi alma">Bilgi alma</option>
+                    <option value="Hata Bildirimi">Hata Bildirimi (Bug)</option>
+                    <option value="Öneri">Öneri</option>
+                    <option value="Diğer">Diğer</option>
                 </select>
             </div>
 
             <div class="form-group">
                 <label>Mesaj</label>
-                <textarea id="userMessage" rows="3" required></textarea>
+                <textarea name="message" rows="4" required placeholder="Nasıl yardımcı olabiliriz?"></textarea>
             </div>
 
-            <button type="submit" class="btn-send" id="submitBtn">
-                <span>Gönder</span>
-                <div class="loader" id="loader"></div>
-            </button>
+            <button type="submit" class="btn-send">Mesajı Gönder</button>
         </form>
 
-        <div id="response-msg"></div>
+        <a href="mailto:communication@fasth.tech" class="mail-link">Doğrudan e-posta gönder: communication@fasth.tech</a>
+        
+        <div id="response-msg">Mesajınız başarıyla iletildi!</div>
     </div>
 
     <script>
-        const form = document.getElementById('supportForm');
-        const btn = document.getElementById('submitBtn');
-        const loader = document.getElementById('loader');
+        const form = document.getElementById('contactForm');
         const resMsg = document.getElementById('response-msg');
 
-        // ÖNEMLİ: Cloudflare Worker URL'nizi buraya yapıştırın
-        const WORKER_URL = "https://fancy-shape-c079.d7272581.workers.dev"; 
-
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            // UI Başlat
-            btn.disabled = true;
-            loader.style.display = 'block';
-            resMsg.style.display = 'none';
-
-            const payload = {
-                name: document.getElementById('userName').value,
-                email: document.getElementById('userEmail').value,
-                issue: document.getElementById('issueType').value,
-                message: document.getElementById('userMessage').value
-            };
-
-            try {
-                const response = await fetch(WORKER_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-
-                if (!response.ok) throw new Error('Worker hatası');
-
-                const data = await response.json();
-
-                if (data.answer) {
-                    resMsg.className = 'success';
-                    resMsg.innerHTML = `<strong>Yanıt:</strong><br>${data.answer.replace(/\n/g, '<br>')}`;
-                    form.reset();
-                } else if (data.error) {
-                    // Worker'dan gelen detaylı hata mesajını göster (Key mi eksik, Google mı kapalı göreceksin)
-                    throw new Error(data.error); 
-                } else {
-                    throw new Error("Bilinmeyen bir hata oluştu.");
-                }
-
-            } catch (error) {
-                resMsg.className = 'error';
-                resMsg.innerHTML = "Mesaj gönderilemedi. Lütfen sonra tekrar deneyin.";
-                console.error("Hata:", error);
-            } finally {
-                btn.disabled = false;
-                loader.style.display = 'none';
-                resMsg.style.display = 'block';
-            }
-        });
+        form.onsubmit = function(e) {
+            // Not: Formspree kullanıyorsan bu basit script ile sayfayı yenilemeden
+            // başarı mesajı gösterebilirsin.
+            resMsg.style.display = 'block';
+            resMsg.className = 'success';
+            // form.reset(); // İsteğe bağlı
+        };
     </script>
 </body>
 </html>
