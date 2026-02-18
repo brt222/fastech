@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fastech Support | AI Destek</title>
+    <style>
+        :root {
+            --primary: #00d2ff;
+            --secondary: #3a7bd5;
+            --bg: #0f172a;
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --text: #f1f5f9;
+            --accent: #10b981;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', system-ui, sans-serif; }
+
+        body {
+            background: radial-gradient(circle at bottom left, #1e293b, #0f172a);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+        }
+
+        .bg-glow {
+            position: fixed;
+            width: 300px;
+            height: 300px;
+            background: var(--primary);
+            filter: blur(120px);
+            border-radius: 50%;
+            opacity: 0.15;
+            z-index: -1;
+            animation: float 10s infinite alternate;
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(100px, 50px); }
+        }
+
+        .support-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 2.5rem;
+            border-radius: 24px;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 { font-size: 2rem; margin-bottom: 0.5rem; color: var(--primary); }
+        p.subtitle { color: #94a3b8; margin-bottom: 2rem; font-size: 0.9rem; }
+
+        .form-group { margin-bottom: 1.5rem; }
+        label { display: block; margin-bottom: 0.5rem; font-size: 0.85rem; color: #94a3b8; }
+
+        input, select, textarea {
+            width: 100%;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 0.8rem 1rem;
+            border-radius: 12px;
+            color: white;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--primary);
+            background: rgba(15, 23, 42, 0.8);
+        }
+
+        .btn-send {
+            width: 100%;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-send:disabled { opacity: 0.6; cursor: not-allowed; }
+
+        .loader {
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            display: none;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        #response-msg {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            border-radius: 12px;
+            display: none;
+            font-size: 0.9rem;
+        }
+
+        .success { background: rgba(16, 185, 129, 0.1); color: var(--accent); border: 1px solid var(--accent); }
+        .error { background: rgba(239, 68, 68, 0.1); color: #f87171; border: 1px solid #f87171; }
+    </style>
+</head>
+<body>
+
+    <div class="bg-glow"></div>
+
+    <div class="support-card">
+        <h2>Destek Hattı</h2>
+        <p class="subtitle">Sorularınızı iletin, AI asistanımız anında yanıtlasın.</p>
+
+        <form id="supportForm">
+            <div class="form-group">
+                <label>Ad Soyad</label>
+                <input type="text" id="userName" required>
+            </div>
+
+            <div class="form-group">
+                <label>E-posta</label>
+                <input type="email" id="userEmail" required>
+            </div>
+
+            <div class="form-group">
+                <label>Konu</label>
+                <select id="issueType">
+                    <option value="Teknik Destek">Teknik Destek</option>
+                    <option value="Fatura">Fatura / Ödeme</option>
+                    <option value="Geri Bildirim">Geri Bildirim</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Mesaj</label>
+                <textarea id="userMessage" rows="3" required></textarea>
+            </div>
+
+            <button type="submit" class="btn-send" id="submitBtn">
+                <span>Gönder</span>
+                <div class="loader" id="loader"></div>
+            </button>
+        </form>
+
+        <div id="response-msg"></div>
+    </div>
+
+    <script>
+        const form = document.getElementById('supportForm');
+        const btn = document.getElementById('submitBtn');
+        const loader = document.getElementById('loader');
+        const resMsg = document.getElementById('response-msg');
+
+        // ÖNEMLİ: Cloudflare Worker URL'nizi buraya yapıştırın
+        const WORKER_URL = "https://worker-adiniz.workers.dev"; 
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // UI Başlat
+            btn.disabled = true;
+            loader.style.display = 'block';
+            resMsg.style.display = 'none';
+
+            const payload = {
+                name: document.getElementById('userName').value,
+                email: document.getElementById('userEmail').value,
+                issue: document.getElementById('issueType').value,
+                message: document.getElementById('userMessage').value
+            };
+
+            try {
+                const response = await fetch(WORKER_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) throw new Error('Worker hatası');
+
+                const data = await response.json();
+                
+                // Gemini yanıtını işle
+                if (data.candidates && data.candidates[0]) {
+                    const aiResponse = data.candidates[0].content.parts[0].text;
+                    resMsg.className = 'success';
+                    resMsg.innerHTML = `<strong>Yanıt:</strong><br>${aiResponse.replace(/\n/g, '<br>')}`;
+                    form.reset();
+                } else {
+                    throw new Error("API'den yanıt alınamadı.");
+                }
+
+            } catch (error) {
+                resMsg.className = 'error';
+                resMsg.innerHTML = "Mesaj gönderilemedi. Lütfen sonra tekrar deneyin.";
+                console.error("Hata:", error);
+            } finally {
+                btn.disabled = false;
+                loader.style.display = 'none';
+                resMsg.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>
