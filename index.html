@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
+    <script>
+      const urlParams = new URLSearchParams(window.location.search);
+      const anahtar = urlParams.get('erisim');
+
+      // Eğer URL'de ?erisim=admin-modu yazmıyorsa 403'e gönder
+      if (anahtar !== 'admin') {
+        window.location.href = "/403.html";
+      }
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fastech | Modern Teknoloji Çözümleri</title>
