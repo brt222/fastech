@@ -146,8 +146,8 @@
                 <label>Konu</label>
                 <select id="issueType">
                     <option value="Teknik Destek">Teknik Destek</option>
-                    <option value="Fatura">Fatura / Ödeme</option>
                     <option value="Geri Bildirim">Geri Bildirim</option>
+                    <option value="Bilgi alma">Bilgi alma</option>
                 </select>
             </div>
 
@@ -172,7 +172,7 @@
         const resMsg = document.getElementById('response-msg');
 
         // ÖNEMLİ: Cloudflare Worker URL'nizi buraya yapıştırın
-        const WORKER_URL = "https://worker-adiniz.workers.dev"; 
+        const WORKER_URL = "fancy-shape-c079.d7272581.workers.dev"; 
 
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
