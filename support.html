@@ -199,15 +199,16 @@
                 if (!response.ok) throw new Error('Worker hatası');
 
                 const data = await response.json();
-                
-                // Gemini yanıtını işle
-                if (data.candidates && data.candidates[0]) {
-                    const aiResponse = data.candidates[0].content.parts[0].text;
+
+                if (data.answer) {
                     resMsg.className = 'success';
-                    resMsg.innerHTML = `<strong>Yanıt:</strong><br>${aiResponse.replace(/\n/g, '<br>')}`;
+                    resMsg.innerHTML = `<strong>Yanıt:</strong><br>${data.answer.replace(/\n/g, '<br>')}`;
                     form.reset();
+                } else if (data.error) {
+                    // Worker'dan gelen detaylı hata mesajını göster (Key mi eksik, Google mı kapalı göreceksin)
+                    throw new Error(data.error); 
                 } else {
-                    throw new Error("API'den yanıt alınamadı.");
+                    throw new Error("Bilinmeyen bir hata oluştu.");
                 }
 
             } catch (error) {
