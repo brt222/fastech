@@ -113,24 +113,37 @@
             background: #000; padding: 1.5rem; border-radius: 8px;
             overflow-x: auto; color: #10b981; margin-top: 1rem;
         }
-        /* Footer Tasarımı */
-        footer {
-            text-align: center;
-            padding: 2rem 0;
-            margin-top: auto;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            background: rgba(15, 23, 42, 0.5);
-        }
+        body {
+			background: radial-gradient(circle at top right, #1e293b, #0f172a);
+			color: var(--text);
+			line-height: 1.6;
+			min-height: 100vh;
+			display: flex;
+			flex-direction: column;
+		}
 
-        .footer-text {
-            font-size: 0.85rem;
-            color: #64748b; /* Soft gri tonu */
-            letter-spacing: 1px;
-        }
+		.container { 
+			padding: 4rem 10%; 
+			flex: 1; 
+		}
 
-        .footer-text span {
-            color: var(--primary); /* İsmi vurgulamak için mavi tonu */
-        }
+		footer {
+			text-align: center;
+			padding: 2rem 0;
+			margin-top: auto;
+			border-top: 1px solid rgba(255, 255, 255, 0.05);
+			background: rgba(15, 23, 42, 0.5);
+		}
+
+		.footer-text {
+			font-size: 0.85rem;
+			color: #64748b;
+			letter-spacing: 1px;
+		}
+
+		.footer-text span {
+			color: var(--primary);
+		}
     </style>
 </head>
 <body>
@@ -245,9 +258,9 @@
 
         <div id="contact" class="section">
             <h2>İletişim</h2>
-            <p>Benimle iletişime geçmek için (Yedek e-postadır): d7272581@gmail.com</p>
+            <p>Benimle iletişime geçmek için (Yedek e-postadır):</p><a href="mailto:d7272581@gmail.com"> d7272581@gmail.com</a>
             <p>Yeni projelerden haberdar olmak için adresten bilgi alabilirsiniz</p>
-            <p style="color: darkred;">YENİ ADRESİMİZ (EK): communication@fasth.tech</p>
+            <p style="color: darkred;">YENİ ADRESİMİZ (EK):</p><a href="mailto:communication@fasth.tech"> communication@fasth.tech</a>
         </div>
     </div>
 
