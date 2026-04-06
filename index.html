@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fastech | Modern Teknoloji Çözümleri</title>
+    <title>Fastech</title>
     <style>
         /* Modern CSS Değişkenleri ve Reset */
         :root {
@@ -112,6 +112,24 @@
         pre {
             background: #000; padding: 1.5rem; border-radius: 8px;
             overflow-x: auto; color: #10b981; margin-top: 1rem;
+        }
+        /* Footer Tasarımı */
+        footer {
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: auto;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(15, 23, 42, 0.5);
+        }
+
+        .footer-text {
+            font-size: 0.85rem;
+            color: #64748b; /* Soft gri tonu */
+            letter-spacing: 1px;
+        }
+
+        .footer-text span {
+            color: var(--primary); /* İsmi vurgulamak için mavi tonu */
         }
     </style>
 </head>
@@ -227,7 +245,9 @@
 
         <div id="contact" class="section">
             <h2>İletişim</h2>
-            <p>Bizimle iletişime geçmek için: d7272581@gmail.com</p>
+            <p>Benimle iletişime geçmek için (Yedek e-postadır): d7272581@gmail.com</p>
+            <p>Yeni projelerden haberdar olmak için adresten bilgi alabilirsiniz</p>
+            <p style="color: darkred;">YENİ ADRESİMİZ (EK): communication@fasth.tech</p>
         </div>
     </div>
 
@@ -262,5 +282,10 @@
             evt.currentTarget.classList.add("active");
         }
     </script>
+
+    <footer>
+        <p class="footer-text">2026© Fastech ETYA | <span>Berat Os**ni</span></p>
+    </footer>
+    
 </body>
 </html>
