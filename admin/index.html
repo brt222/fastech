@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Kontrol Paneli</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <style>
+        :root { --bg: #0f172a; --card: #1e293b; --accent: #38bdf8; --text: #f1f5f9; }
+        body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color: var(--text); margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        
+        /* Ortak Kart Yapısı */
+        .container { background: var(--card); padding: 2rem; border-radius: 1rem; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); width: 100%; max-width: 450px; text-align: center; border: 1px solid #334155; }
+        .hidden { display: none !important; }
+
+        /* Login Ekranı Stilleri */
+        .login-img { width: 100px; height: 100px; border-radius: 50%; margin-bottom: 1.5rem; border: 3px solid var(--accent); padding: 5px; }
+        input { width: 100%; padding: 0.75rem; margin: 1rem 0; border-radius: 0.5rem; border: 1px solid #334155; background: #0f172a; color: white; box-sizing: border-box; }
+        button { width: 100%; padding: 0.75rem; border: none; border-radius: 0.5rem; background: var(--accent); color: #0f172a; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        button:hover { opacity: 0.9; transform: translateY(-2px); }
+
+        /* Dashboard Stilleri */
+        .dashboard { max-width: 800px; }
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.5rem 0; }
+        .stat-card { background: #0f172a; padding: 1rem; border-radius: 0.5rem; border: 1px solid #334155; }
+        .stat-value { font-size: 1.5rem; font-weight: bold; color: var(--accent); }
+        .logout-btn { background: #ef4444; color: white; margin-top: 1rem; }
+    </style>
+</head>
+<body>
+
+    <div id="login-section" class="container">
+        <img src="https://fasth.tech/datasandfiles/logo.png" alt="Admin" class="login-img">
+        <h2 style="margin:0">Sistem Girişi</h2>
+        <p style="color: #94a3b8; font-size: 0.9rem;">İstatistikler aşağıda listelenmiştir.</p>
+        
+        <div id="public-stats" style="margin-top: 1rem; padding: 10px; background: #0f172a; border-radius: 8px;">
+            <small>Toplam Ziyaretçi (Public):</small>
+            <div style="font-size: 1.2rem; font-weight: bold;">1,248</div>
+        </div>
+
+        <input type="password" id="passInput" placeholder="Yönetici Anahtarı...">
+        <button onclick="checkLogin()">Panele Eriş</button>
+    </div>
+
+    <div id="dashboard-section" class="container dashboard hidden">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <h2 style="margin:0">Admin Dashboard</h2>
+            <span style="color: #22c55e;">● Online</span>
+        </div>
+        
+        <div class="stats-grid">
+            <div class="stat-card">
+                <small>Tekil Hit</small>
+                <div class="stat-value">842</div>
+            </div>
+            <div class="stat-card">
+                <small>Sayfa Görüntüleme</small>
+                <div class="stat-value">3,120</div>
+            </div>
+        </div>
+
+        <canvas id="myChart" style="width:100%; max-height:250px; margin-bottom: 1rem;"></canvas>
+
+        <div style="text-align: left; background: #0f172a; padding: 1rem; border-radius: 0.5rem;">
+            <h4 style="margin-top:0">Hızlı İşlemler</h4>
+            <button onclick="alert('Site Bakım Moduna Alındı')" style="background: #f59e0b; margin-bottom: 0.5rem;">Bakım Modunu Aç</button>
+            <button onclick="alert('Önbellek Temizlendi')" style="background: #6366f1;">CDN Cache Temizle</button>
+        </div>
+
+        <button class="logout-btn" onclick="logout()">Güvenli Çıkış Yap</button>
+    </div>
+
+<script>
+    const SECRET_HASH = "240be518fabd2724ddb6f0403f3591451e06f9e21908221b65b6f059286d52a2";
+
+    async function sha256(text) {
+        const msgBuffer = new TextEncoder().encode(text);
+        const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+        return Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    async function checkLogin() {
+        const input = document.getElementById('passInput').value;
+        const hashedInput = await sha256(input);
+
+        if (hashedInput === SECRET_HASH) {
+            sessionStorage.setItem('is_admin', 'true');
+            initDashboard();
+        } else {
+            alert("Hatalı anahtar!");
+        }
+    }
+
+    function initDashboard() {
+        document.getElementById('login-section').classList.add('hidden');
+        document.getElementById('dashboard-section').classList.remove('hidden');
+        renderChart();
+    }
+
+    function logout() {
+        sessionStorage.removeItem('is_admin');
+        location.reload();
+    }
+
+    // Grafik Çizimi (Chart.js)
+    function renderChart() {
+        const ctx = document.getElementById('myChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt', 'Paz'],
+                datasets: [{
+                    label: 'Haftalık Ziyaretçi',
+                    data: [120, 190, 300, 250, 400, 550, 480],
+                    borderColor: '#38bdf8',
+                    tension: 0.4
+                }]
+            },
+            options: { plugins: { legend: { display: false } } }
+        });
+    }
+
+    // Sayfa yüklendiğinde oturum kontrolü
+    if (sessionStorage.getItem('is_admin') === 'true') {
+        initDashboard();
+    }
+</script>
+
+</body>
+</html>
