@@ -21,7 +21,7 @@
 
         if (bookId) {
             // fetch ile dışarıdaki .txt dosyasını çağırıyoruz
-            fetch(`fasth.tech/datasandfiles/${bookId}.txt`)
+            fetch(`https://fasth.tech/datasandfiles/${bookId}.txt`)
                 .then(response => {
                     if (!response.ok) throw new Error('Kitap dosyası bulunamadı.');
                     return response.text();
