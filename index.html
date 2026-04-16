@@ -179,6 +179,12 @@
                     <p style="color: #94a3b8; margin-top: 10px;">Base64, AES256 ve RSA256 destekli şifreleme aracı.</p>
                     <p style="color: var(--primary); margin-top: 15px; font-weight: bold;">Detayları Gör →</p>
                 </div>
+
+                <div class="project-card" onclick="showSection('permexe-page')">
+                    <h3>PERMEXE</h3>
+                    <p style="color: #94a3b8; margin-top: 10px;">Yüksek seviye yetkili işlem yönetim sistemi.</p>
+                    <p style="color: var(--primary); margin-top: 15px; font-weight: bold;">Detayları Gör →</p>
+                </div>
             </div>
         </div>
 
@@ -240,7 +246,7 @@
                 <div id="fe-release" class="tab-content">
                     <h3>Son Sürümü İndir</h3>
                     <p>Derlenmiş exe dosyasını aşağıdaki bağlantıdan indirebilirsiniz.</p>
-                    <a href="https://github.com/hcode-lang/fastech/raw/refs/heads/main/datasandfiles/FEncrypt.exe" class="download-btn">FEncrypt.exe (10.8)</a>
+                    <a href="https://github.com/hcode-lang/fastech/raw/refs/heads/main/datasandfiles/FEncrypt.exe" class="download-btn">FEncrypt.exe (10.8 MB)</a>
                 </div>
 
                 <div id="fe-doc" class="tab-content">
@@ -252,6 +258,60 @@
 4. "Key" alanına şifrenizi girin ve "Encrypt" butonuna basın.
 5. Deşifre etmek için "Decrypt" moduna geçip aynı anahtarı kullanın.
                     </pre>
+                </div>
+            </div>
+        </div>
+
+        <div id="permexe-page" class="section">
+            <a onclick="showSection('projects')" style="color: var(--primary); cursor: pointer; display: block; margin-bottom: 1rem;">← Projelere Dön</a>
+            <div class="details-container">
+                <h1>PERMEXE v1.0</h1>
+                <p style="margin-bottom: 2rem; color: #94a3b8;">Yüksek seviye yetkili işlem yönetim sistemi.</p>
+
+                <div class="detail-tabs">
+                    <button class="tab-btn active" onclick="openTab(event, 'perm-desc')">Açıklama</button>
+                    <button class="tab-btn" onclick="openTab(event, 'perm-release')">Yayın</button>
+                    <button class="tab-btn" onclick="openTab(event, 'perm-doc')">Dokümantasyon</button>
+                </div>
+
+                <div id="perm-desc" class="tab-content active">
+                    <h3>Proje Hakkında</h3>
+                    <p>Bu araç, sisteminiz üzerinde bir dosya bozulduğunda, bir Windows servisi hata verdiğinde, yetki hatalarına takılmadan yüksek seviye yetkili işlem yapabilmenizi sağlar ve sizi yetki döngüsünden kurtarır.</p>
+                    <p style="margin-top: 1rem;">C++ DLL backend ve Python wrapper ile yüksek performanslı Windows API entegrasyonu sağlar.</p>
+                </div>
+
+                <div id="perm-release" class="tab-content">
+                    <h3>Son Sürümü İndir</h3>
+                    <a href="https://github.com/hcode-lang/fastech/raw/refs/heads/main/datasandfiles/permexe-release-v1.zip" class="download-btn">permexe-release-v1.zip (8.1 MB)</a>
+                </div>
+
+                <div id="perm-doc" class="tab-content">
+                    <h3>Kullanım Örnekleri</h3>
+                    <pre>
+# PowerShell'i SYSTEM olarak çalıştır
+permexe --user SYSTEM --run "powershell.exe -Command Get-Process"
+
+# CMD'yi SYSTEM olarak çalıştır
+permexe --user SYSTEM --run cmd.exe
+
+# Notepad'i TrustedInstaller olarak çalıştır
+permexe --user TrustedInstaller --run notepad.exe
+
+# Mevcut yetki durumunu kontrol et
+permexe --check
+
+# Sistem bilgilerini göster
+permexe --info
+                    </pre>
+
+                    <h3 style="margin-top: 2rem;">Komut Satırı Seçenekleri</h3>
+                    <ul style="margin-top: 1rem; margin-left: 1.5rem;">
+                        <li><strong>--user, -u:</strong> Hedef kullanıcı türü (SYSTEM, TrustedInstaller)</li>
+                        <li><strong>--run, -r:</strong> Yüksek yetkilerle çalıştırılacak komut</li>
+                        <li><strong>--check, -c:</strong> Mevcut yetki durumunu kontrol et</li>
+                        <li><strong>--info, -i:</strong> Sistem bilgilerini göster</li>
+                        <li><strong>--dll:</strong> privilege.dll dosyasının yolu (varsayılan konumda değilse)</li>
+                    </ul>
                 </div>
             </div>
         </div>
